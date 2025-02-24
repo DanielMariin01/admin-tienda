@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Estadistica extends Model
+class Venta extends Model
 {
-    //
+    protected $table = 'ventas';
+    
 }
