@@ -23,6 +23,7 @@ services:
             - sail
         depends_on:
             - pgsql
+
     pgsql:
         image: 'postgres:17'
         ports:
@@ -36,7 +37,9 @@ services:
             - 'sail-pgsql:/var/lib/postgresql/data'
             - './vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
         networks:
-            - sail
+            sail:
+                aliases:
+                    - pgsql
         healthcheck:
             test:
                 - CMD
@@ -48,9 +51,11 @@ services:
                 - '${DB_USERNAME}'
             retries: 3
             timeout: 5s
+
 networks:
     sail:
         driver: bridge
+
 volumes:
     sail-pgsql:
         driver: local

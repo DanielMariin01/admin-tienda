@@ -13,7 +13,9 @@ class Producto extends Model
 
     protected $fillable = [
         'nombre',
-        'precio',
+        'precio_costo',
+        'precio_venta',
+        'porcentaje_ganancia',
         'stock',
     ];
 }

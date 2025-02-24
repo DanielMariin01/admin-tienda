@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductoResource\Pages;
 use App\Filament\Resources\ProductoResource\RelationManagers;
+use App\Filament\Resources\ProductoResource\Resources;
+use Filament\Forms\Components\TextInput;
 use App\Models\Producto;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -23,7 +25,35 @@ class ProductoResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('nombre')
+                    ->label('Nombre')
+                    ->required()
+                    ->maxLength(255),
+
+                TextInput::make('precio_costo')
+                    ->label('Precio de Costo')
+                    ->numeric()
+                    ->required()
+                    ->prefix('$')
+                    ->reactive(),
+
+                TextInput::make('porcentaje_ganancia')
+                    ->label('Porcentaje de Ganancia')
+                    ->numeric()
+                    ->suffix('%')
+                    ->default(0)
+                    ->reactive(),
+
+                TextInput::make('precio_venta')
+                    ->label('Precio de Venta')
+                    ->numeric()
+                    ->prefix('$')
+                    ->disabled()
+                    ->dehydrated()
+                    ->reactive()
+                    ->afterStateUpdated(fn ($state, callable $set, callable $get) => 
+                        $set('precio_venta', $get('precio_costo') + ($get('precio_costo') * ($get('porcentaje_ganancia') / 100)))
+                    ),
             ]);
     }
 
